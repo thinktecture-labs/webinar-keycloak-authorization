@@ -1,0 +1,31 @@
+<div class="card">
+  <form [formGroup]="projectForm" (ngSubmit)="update()">
+  <div class="card-body">
+    <h5 class="card-title" *ngIf="!isEditMode">
+      {{ project?.name }}
+    </h5>
+    <h5 class="card-title" *ngIf="isEditMode">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
+    </h5>
+    <div class="card-text">
+      <p>Project lead: {{ project.projectLead }}</p>
+      <p>Is Archive: {{ project.isArchived }}</p>
+    </div>
+    <div class="d-flex flex-row bd-highlight mb-3">
+      <div class="p-2">
+        <button *ngIf="!isEditMode" (click)="isEditMode = true" class="btn btn-info">Edit</button>
+        <button *ngIf="isEditMode" type="submit" class="btn btn-success">Save</button>
+      </div>
+      <div class="p-2" *ngIf="canDelete && !isEditMode">
+        <button (click)="delete()" class="btn btn-danger" type="button">Delete</button>
+      </div>
+      <div class="p-2" *ngIf="canArchiveProject && !isEditMode">
+        <button (click)="archive()" class="btn btn-danger" type="button">Archive</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+

@@ -1,0 +1,40 @@
+<div *ngIf="customer != null">
+  <header>
+    <h1>
+      {{ customer.name }}
+    </h1>
+  </header>
+  <div class="card" *ngIf="canCreateProject">
+    <form [formGroup]="projectForm" (ngSubmit)="add()">
+    <div class="card-body">
+      <h5 class="card-title">
+        New Project
+      </h5>
+      <div class="card-text">
+        <div class="mb-3 row">
+          <label for="project" class="col-sm-2 col-form-label">Project</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="project" formControlName="name" />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="projectlead" class="col-sm-2 col-form-label">Project lead</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="projectlead" formControlName="projectlead" />
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success">Add</button>
+    </div>
+    </form>
+  </div>
+  <div>
+    <app-project-item
+      *ngFor="let project of projects"
+      [project]="project"
+      (onDelete)="onDelete($event)"
+      (onUpdate)="onUpdate($event)"
+      (onArchive)="onArchive($event)"
+    ></app-project-item>
+  </div>
+</div>

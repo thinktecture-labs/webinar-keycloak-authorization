@@ -1,0 +1,9 @@
+# Visual Studio
+bin/
+obj/
+.vs/
+.idea/
+*.user
+
+# sqlite db
+data.db

@@ -1,0 +1,26 @@
+<div class="card" *ngIf="customer != null">
+  <form [formGroup]="customerForm" (ngSubmit)="update()">
+  <div class="card-body">
+    <h5 class="card-title" *ngIf="!isEditMode">
+      {{ customer.name }}
+    </h5>
+    <h5 class="card-title" *ngIf="isEditMode">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
+    </h5>
+    <div class="d-flex flex-row bd-highlight mb-3">
+      <div class="p-2" *ngIf="canReadProjects">
+        <a [routerLink]="['customer', customer.id]" class="btn btn-primary">Projects</a>
+      </div>
+      <div class="p-2" *ngIf="canUpdate">
+        <button *ngIf="!isEditMode" (click)="isEditMode = true" class="btn btn-info" type="button">Edit</button>
+        <button *ngIf="isEditMode" class="btn btn-success" type="submit" >Save</button>
+      </div>
+      <div class="p-2" *ngIf="canDelete && !isEditMode">
+        <button (click)="delete()" class="btn btn-danger" type="button">Delete</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>

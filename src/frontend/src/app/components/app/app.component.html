@@ -1,0 +1,7 @@
+<app-header></app-header>
+<div class="alert alert-danger alert-dismissible" role="alert" *ngIf="message">
+  {{message}} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="message=''"></button>
+</div>
+<main class="container-lg my-md-4">
+  <router-outlet></router-outlet>
+</main>

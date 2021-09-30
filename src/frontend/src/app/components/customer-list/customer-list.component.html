@@ -1,0 +1,6 @@
+<app-customer-item
+  *ngFor="let customer of customers"
+  [customer]="customer"
+  (onDelete)="onDelete($event)"
+  (onUpdate)="onUpdate($event)"
+></app-customer-item>
