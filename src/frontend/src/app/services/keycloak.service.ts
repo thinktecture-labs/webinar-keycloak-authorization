@@ -20,7 +20,7 @@ export class KeycloakService {
 
   private keycloak: Keycloak.KeycloakInstance;
 
-  private uma2Configuraton?: Observable<UMA2Configuration>;
+  private uma2Configuration?: Observable<UMA2Configuration>;
 
   constructor(private http: HttpClient) {
     this.keycloak = Keycloak({
@@ -81,14 +81,14 @@ export class KeycloakService {
 
   // loads UMA2 discovery document from Keycloak
   private loadUMA2Configuration(): Observable<UMA2Configuration> {
-    if (this.uma2Configuraton == null) {
-      this.uma2Configuraton = this.http
+    if (this.uma2Configuration == null) {
+      this.uma2Configuration = this.http
         .get<UMA2Configuration>(
           `${this.keycloak.authServerUrl}/realms/${this.keycloak.realm}/.well-known/uma2-configuration`
         )
         .pipe(publishLast(), refCount());
     }
-    return this.uma2Configuraton;
+    return this.uma2Configuration;
   }
 
   private makeUMARequest<TResponse>(
