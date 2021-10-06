@@ -5,12 +5,17 @@ namespace API
 {
     public class Resource
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
+        public Resource(string name, string[] scopes)
+        {
+            Name = name;
+            Scopes = scopes;
+        }
+        public string Name { get; }
+        public string? Type { get; set; }
 
         [JsonPropertyName("resource_scopes")]
-        public string[] Scopes { get; set; }
+        public string[] Scopes { get; }
 
-        public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Attributes { get; } = new Dictionary<string, string>();
     }
 }

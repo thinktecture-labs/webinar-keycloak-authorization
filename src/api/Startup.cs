@@ -15,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -23,7 +22,7 @@ namespace API
 {
     public class Startup
     {
-        private const string _roleClaimType = "role";
+        private const string RoleClaimType = "role";
 
         public Startup(IConfiguration configuration)
         {
@@ -51,6 +50,17 @@ namespace API
                 options.UseSqlite($"Data Source={databasePath}");
             });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1"
+                    , new OpenApiInfo
+                    {
+                        Title = "API"
+                        , Version = "v1"
+                    });
+            });
+            
+            // Configure authentication
             var jwtOptions = Configuration.GetSection("JwtBearer").Get<JwtBearerOptions>();
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -65,13 +75,14 @@ namespace API
                         ,
                         // Specify what the claim name is, for roles.
                         // Needed so ASP.NET Core knowns where to look for the roles of the user.
-                        RoleClaimType = _roleClaimType
+                        RoleClaimType = RoleClaimType
                     };
                 });
-
+            
             services.AddTransient<IClaimsTransformation>(_ =>
-                new KeycloakRolesClaimsTransformation(_roleClaimType, jwtOptions.Audience));
+                new KeycloakRolesClaimsTransformation(RoleClaimType, jwtOptions.Audience));
 
+            // Configure authorization
             services.AddSingleton<IAuthorizationHandler, DecisionRequirementHandler>();
             services.AddSingleton<IAuthorizationHandler, RptRequirementHandler>();
             services.AddAuthorization(options =>
@@ -114,6 +125,10 @@ namespace API
                     , builder => builder.RequireAssertion(async context =>
                     {
                         var httpContext = context.Resource as HttpContext;
+                        if (httpContext == null)
+                        {
+                            return false;
+                        }
                         var authorizationService =
                             httpContext.RequestServices.GetRequiredService<IAuthorizationService>();
                         var policy =
@@ -131,22 +146,12 @@ namespace API
                 #endregion
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1"
-                    , new OpenApiInfo
-                    {
-                        Title = "API"
-                        , Version = "v1"
-                    });
-            });
-
             services.AddHttpClient<KeycloakService>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["KeycloakResourceUrl"]);
             });
             services.AddHttpClient<TokenClient>();
-            services.AddSingleton<ClientCredentialsTokenRequest>(_ =>
+            services.AddSingleton(_ =>
                 Configuration.GetSection("ClientCredentialsTokenRequest").Get<ClientCredentialsTokenRequest>());
         }
 

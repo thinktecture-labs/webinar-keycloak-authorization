@@ -41,8 +41,10 @@ namespace API.Authorization.Decision
             var client = new HttpClient();
             var token = await httpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, "access_token");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
             var configuration = await options.ConfigurationManager.GetConfigurationAsync(CancellationToken.None);
             var response = await client.PostAsync(configuration.TokenEndpoint, new FormUrlEncodedContent(data));
+            
             if (response.IsSuccessStatusCode)
             {
                 context.Succeed(requirement);

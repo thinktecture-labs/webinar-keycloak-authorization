@@ -3,7 +3,6 @@ using System.Linq;
 using API.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -11,7 +10,7 @@ namespace API
 {
     public class Program
     {
-        private const int PROJECT_PER_CUSTOMER = 5;
+        private const int ProjectPerCustomer = 3;
 
         public static void Main(string[] args)
         {
@@ -48,7 +47,7 @@ namespace API
                     , Name = customer
                 });
 
-                for (int j = 0; j < PROJECT_PER_CUSTOMER; j++)
+                for (int j = 0; j < ProjectPerCustomer; j++)
                 {
                     context.Projects.Add(new Project()
                     {

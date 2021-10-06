@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Models;
@@ -69,11 +68,9 @@ namespace API.Controllers
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
 
-            await keycloakService.CreateResource(new Resource()
+            await keycloakService.CreateResource(new Resource($"projects/{project.Id}", new[] {"archive"})
             {
-                Name = $"projects/{project.Id}"
-                , Type = "urn:api:resource:project"
-                , Scopes = new[] {"archive"}
+                Type = "urn:api:resource:project"
                 , Attributes =
                 {
                     {"projectlead", project.ProjectLead}
