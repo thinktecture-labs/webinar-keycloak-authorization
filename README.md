@@ -43,3 +43,8 @@ to start Keycloak, the API and Angular Frontend.
 | [keycloak.service.ts](src/frontend/src/app/services/keycloak.service.ts#L64) | getEntitlement requests a RPT from Keycloak.                                             |
 | [keycloak.service.ts](src/frontend/src/app/services/keycloak.service.ts#L70) | loadPermission loads all permissions from Keycloak to make them available in the client. |
 | [backend.interceptor.ts](src/frontend/src/app/backend.interceptor.ts)        | interceptor that uses either RPT or normal Access Token depending on the URL             |
+
+## Related Links
+
+- [Policy-based authorization in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies?view=aspnetcore-5.0)
+- [Keycloak Authorization Services Guide](https://www.keycloak.org/docs/latest/authorization_services/)
